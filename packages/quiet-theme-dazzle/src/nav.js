@@ -4,7 +4,7 @@ import Link from 'next/link'
 export default function Nav({ navPages }) {
   return (
     <div className="nav-line">
-      {navPages.map(page => {
+      {navPages.map((page) => {
         if (page.active) {
           return (
             <span key={page.route} className="nav-link">

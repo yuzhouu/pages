@@ -3,5 +3,5 @@ export default function getTags(page) {
     return []
   }
   const tags = page.frontMatter.tag || ''
-  return tags.split(',').map(s => s.trim())
+  return tags.split(',').map((s) => s.trim())
 }

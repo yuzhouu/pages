@@ -1,1 +1,1 @@
-module.exports = require("./dist/quiet-theme-dazzle");
+module.exports = require('./dist/quiet-theme-dazzle')

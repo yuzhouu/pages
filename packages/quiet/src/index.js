@@ -3,10 +3,13 @@ const markdownExtensions = ['md', 'mdx']
 const markdownExtensionTest = /\.mdx?$/
 
 export default (theme, themeConfig) => (nextConfig = {}) => {
-  const nextraConfig = typeof theme === "string" ? {
-    theme,
-    themeConfig
-  } : theme;
+  const nextraConfig =
+    typeof theme === 'string'
+      ? {
+          theme,
+          themeConfig,
+        }
+      : theme
   const locales = nextConfig.i18n ? nextConfig.i18n.locales : null
   const defaultLocale = nextConfig.i18n ? nextConfig.i18n.defaultLocale : null
 
@@ -27,18 +30,18 @@ export default (theme, themeConfig) => (nextConfig = {}) => {
     nextConfig.rewrites = async () => {
       return [
         ...originalRewrites,
-        ...locales.flatMap(locale => [
+        ...locales.flatMap((locale) => [
           {
             source: `/${locale}`,
             destination: `/index.${locale}`,
-            locale: false
+            locale: false,
           },
           {
             source: `/${locale}/:path*`,
             destination: `/:path*.${locale}`,
-            locale: false
-          }
-        ])
+            locale: false,
+          },
+        ]),
       ]
     }
 
@@ -50,33 +53,34 @@ export default (theme, themeConfig) => (nextConfig = {}) => {
   }
   pageExtensions = pageExtensions.concat(markdownExtensions)
 
-  return Object.assign(
-    {},
-    nextConfig,
-    {
-      pageExtensions,
-      webpack(config, options) {
-        config.module.rules.push({
-          test: markdownExtensionTest,
-          use: [
-            options.defaultLoaders.babel,
-            {
-              loader: '@mdx-js/loader',
-              options: nextraConfig.mdxOptions
+  return Object.assign({}, nextConfig, {
+    pageExtensions,
+    webpack(config, options) {
+      config.module.rules.push({
+        test: markdownExtensionTest,
+        use: [
+          options.defaultLoaders.babel,
+          {
+            loader: '@mdx-js/loader',
+            options: nextraConfig.mdxOptions,
+          },
+          {
+            loader: 'nextra/loader',
+            options: {
+              theme: nextraConfig.theme,
+              themeConfig: nextraConfig.themeConfig,
+              locales,
+              defaultLocale,
             },
-            {
-              loader: 'nextra/loader',
-              options: { theme: nextraConfig.theme, themeConfig: nextraConfig.themeConfig, locales, defaultLocale }
-            }
-          ]
-        })
+          },
+        ],
+      })
 
-        if (typeof nextConfig.webpack === 'function') {
-          return nextConfig.webpack(config, options)
-        }
-
-        return config
+      if (typeof nextConfig.webpack === 'function') {
+        return nextConfig.webpack(config, options)
       }
-    }
-  )
+
+      return config
+    },
+  })
 }

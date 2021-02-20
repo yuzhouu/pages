@@ -7,11 +7,11 @@ module.exports = {
           pre: {
             color: 'inherit',
             backgroundColor: 'whitesmoke',
-            border: '1px solid #eaeaea'
-          }
-        }
-      }
-    }
+            border: '1px solid #eaeaea',
+          },
+        },
+      },
+    },
   },
-  plugins: [require('@tailwindcss/typography')]
+  plugins: [require('@tailwindcss/typography')],
 }

@@ -13,15 +13,7 @@ import getTitle from './utils/get-title'
 import getTags from './utils/get-tags'
 import sortDate from './utils/sort-date'
 
-const Layout = ({
-  config,
-  meta,
-  navPages,
-  postList,
-  back,
-  title,
-  children
-}) => {
+const Layout = ({ config, meta, navPages, postList, back, title, children }) => {
   const [titleNode, contentNodes] = getTitle(children)
   const type = meta.type || 'post'
 
@@ -55,11 +47,9 @@ export default (opts, _config) => {
     {
       readMore: 'Read More →',
       footer: (
-        <small style={{ display: 'block', marginTop: '8rem' }}>
-          CC BY-NC 4.0 2020 © Shu Ding.
-        </small>
+        <small style={{ display: 'block', marginTop: '8rem' }}>CC BY-NC 4.0 2020 © Shu Ding.</small>
       ),
-      postFooter: null
+      postFooter: null,
     },
     _config
   )
@@ -74,11 +64,8 @@ export default (opts, _config) => {
   if (type === 'posts' || type === 'tag' || type === 'page') {
     posts = []
     // let's get all posts
-    traverse(opts.pageMap, page => {
-      if (
-        page.frontMatter &&
-        ['page', 'posts'].includes(page.frontMatter.type)
-      ) {
+    traverse(opts.pageMap, (page) => {
+      if (page.frontMatter && ['page', 'posts'].includes(page.frontMatter.type)) {
         if (page.route === route) {
           navPages.push({ ...page, active: true })
         } else {
@@ -87,16 +74,10 @@ export default (opts, _config) => {
       }
       if (page.children) return
       if (page.name.startsWith('_')) return
-      if (
-        type === 'posts' &&
-        !page.route.startsWith(route === '/' ? route : route + '/')
-      )
-        return
+      if (type === 'posts' && !page.route.startsWith(route === '/' ? route : route + '/')) return
       if (
         type !== 'page' &&
-        (!page.frontMatter ||
-          !page.frontMatter.type ||
-          page.frontMatter.type === 'post')
+        (!page.frontMatter || !page.frontMatter.type || page.frontMatter.type === 'post')
       ) {
         posts.push(page)
       }
@@ -111,7 +92,7 @@ export default (opts, _config) => {
     back = null
   } else {
     const parentPages = []
-    traverse(opts.pageMap, page => {
+    traverse(opts.pageMap, (page) => {
       if (
         route !== page.route &&
         (route + '/').startsWith(page.route === '/' ? '/' : page.route + '/')
@@ -121,13 +102,13 @@ export default (opts, _config) => {
     })
     const parentPage = parentPages
       .reverse()
-      .find(page => page.frontMatter && page.frontMatter.type === 'posts')
+      .find((page) => page.frontMatter && page.frontMatter.type === 'posts')
     if (parentPage) {
       back = parentPage.route
     }
   }
 
-  return props => {
+  return (props) => {
     const router = useRouter()
     const { query } = router
 
@@ -146,7 +127,7 @@ export default (opts, _config) => {
 
     const postList = posts ? (
       <ul>
-        {posts.map(post => {
+        {posts.map((post) => {
           if (tagName) {
             const tags = getTags(post)
             if (!tags.includes(tagName)) {
@@ -156,12 +137,9 @@ export default (opts, _config) => {
             return null
           }
 
-          const postTitle =
-            (post.frontMatter ? post.frontMatter.title : null) || post.name
+          const postTitle = (post.frontMatter ? post.frontMatter.title : null) || post.name
           const postDate = post.frontMatter ? (
-            <time className="post-item-date">
-              {new Date(post.frontMatter.date).toDateString()}
-            </time>
+            <time className="post-item-date">{new Date(post.frontMatter.date).toDateString()}</time>
           ) : null
           const postDescription =
             post.frontMatter && post.frontMatter.description ? (

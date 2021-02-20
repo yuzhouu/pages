@@ -41,12 +41,9 @@ async function getPageMap(currentResourcePath) {
     // go through the directory
     const items = (
       await Promise.all(
-        files.map(async f => {
+        files.map(async (f) => {
           const filePath = path.resolve(dir, f.name)
-          const fileRoute = path.join(
-            route,
-            removeExtension(f.name).replace(/^index$/, '')
-          )
+          const fileRoute = path.join(route, removeExtension(f.name).replace(/^index$/, ''))
 
           if (filePath === currentResourcePath) {
             activeRoute = fileRoute
@@ -59,7 +56,7 @@ async function getPageMap(currentResourcePath) {
             return {
               name: f.name,
               children,
-              route: fileRoute
+              route: fileRoute,
             }
           } else if (extension.test(f.name)) {
             // MDX or MD
@@ -72,7 +69,7 @@ async function getPageMap(currentResourcePath) {
                   name: removeExtension(f.name),
                   route: fileRoute,
                   frontMatter: data,
-                  locale: getLocaleFromFilename(f.name)
+                  locale: getLocaleFromFilename(f.name),
                 }
               }
             }
@@ -80,7 +77,7 @@ async function getPageMap(currentResourcePath) {
             return {
               name: removeExtension(f.name),
               route: fileRoute,
-              locale: getLocaleFromFilename(f.name)
+              locale: getLocaleFromFilename(f.name),
             }
           } else if (metaExtension.test(f.name)) {
             const content = await fs.readFile(filePath, 'utf-8')
@@ -91,13 +88,13 @@ async function getPageMap(currentResourcePath) {
             return {
               name: 'meta.json',
               meta,
-              locale
+              locale,
             }
           }
         })
       )
     )
-      .map(item => {
+      .map((item) => {
         if (!item) return
         return { ...item }
       })
@@ -146,9 +143,7 @@ export default async function (source) {
     layoutConfig = slash(path.resolve(layoutConfig))
   }
 
-  const filename = this.resourcePath.slice(
-    this.resourcePath.lastIndexOf('/') + 1
-  )
+  const filename = this.resourcePath.slice(this.resourcePath.lastIndexOf('/') + 1)
 
   if (locales) {
     const locale = getLocaleFromFilename(filename)

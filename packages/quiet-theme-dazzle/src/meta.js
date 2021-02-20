@@ -4,7 +4,7 @@ import Link from 'next/link'
 export default function Meta({ author, date, tag, back }) {
   const authorNode = author ? author : null
   const dateNode = date ? <time>{new Date(date).toDateString()}</time> : null
-  const tags = tag ? tag.split(',').map(s => s.trim()) : []
+  const tags = tag ? tag.split(',').map((s) => s.trim()) : []
 
   return (
     <div className="meta-line">
@@ -13,7 +13,7 @@ export default function Meta({ author, date, tag, back }) {
         {authorNode && dateNode ? ', ' : null}
         {dateNode}
         {(authorNode || dateNode) && tags.length ? ' • ' : null}
-        {tags.map(t => {
+        {tags.map((t) => {
           return (
             <Link key={t} href="/tags/[tag]" as={`/tags/${t}`}>
               <a className="tag">{t}</a>
