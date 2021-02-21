@@ -5,20 +5,21 @@ import grayMatter from 'gray-matter'
 import slash from 'slash'
 
 import filterRouteLocale from './filter-route-locale'
+import { LoaderOptions } from './types'
 
-function getLocaleFromFilename(name) {
+function getLocaleFromFilename(name: string) {
   const localeRegex = /\.([a-zA-Z-]+)?\.(mdx?|jsx?|json)$/
   const match = name.match(localeRegex)
   if (match) return match[1]
   return undefined
 }
 
-function removeExtension(name) {
+function removeExtension(name: string) {
   const match = name.match(/^([^.]+)/)
   return match !== null ? match[1] : ''
 }
 
-const parseJsonFile = (content, path) => {
+const parseJsonFile = (content: string, path: string) => {
   let parsed = {}
   try {
     parsed = JSON.parse(content)
@@ -29,13 +30,13 @@ const parseJsonFile = (content, path) => {
   return parsed
 }
 
-async function getPageMap(currentResourcePath) {
+async function getPageMap(currentResourcePath: string) {
   const extension = /\.(mdx?|jsx?)$/
   const mdxExtension = /\.mdx?$/
   const metaExtension = /meta\.?([a-zA-Z-]+)?\.json/
   let activeRoute = ''
 
-  async function getFiles(dir, route) {
+  async function getFiles(dir: string, route: string): Promise<any> {
     const files = await fs.readdir(dir, { withFileTypes: true })
 
     // go through the directory
@@ -106,12 +107,12 @@ async function getPageMap(currentResourcePath) {
   return [await getFiles(path.join(process.cwd(), 'pages'), '/'), activeRoute]
 }
 
-export default async function (source) {
+export default async function (this: any, source: string) {
   const callback = this.async()
 
   this.cacheable()
 
-  const options = getOptions(this)
+  const options: LoaderOptions = getOptions(this)
   const { theme, themeConfig, locales, defaultLocale } = options
 
   // Add the entire directory `pages` as the dependency
@@ -119,7 +120,7 @@ export default async function (source) {
   this.addContextDependency(path.resolve('pages'))
 
   // Generate the page map
-  let [pageMap, route] = await getPageMap(this.resourcePath, locales)
+  let [pageMap, route] = await getPageMap(this.resourcePath)
 
   // Extract frontMatter information if it exists
   const { data, content } = grayMatter(source)
@@ -129,18 +130,18 @@ export default async function (source) {
 
   if (!theme) {
     console.error('No Nextra theme found!')
-    return callback(null, source)
+    return callback!(null, source)
   }
 
-  let layout = theme
-  let layoutConfig = themeConfig || null
+  let themePath = theme
+  let themeConfigPath = themeConfig || null
 
   // Relative path instead of a package name
   if (theme.startsWith('.') || theme.startsWith('/')) {
-    layout = path.resolve(theme)
+    themePath = path.resolve(theme)
   }
-  if (layoutConfig) {
-    layoutConfig = slash(path.resolve(layoutConfig))
+  if (themeConfigPath) {
+    themeConfigPath = slash(path.resolve(themeConfigPath))
   }
 
   const filename = this.resourcePath.slice(this.resourcePath.lastIndexOf('/') + 1)
@@ -153,23 +154,23 @@ export default async function (source) {
   }
 
   const prefix = `
-import withLayout from '${layout}'
-import { withSSG } from 'nextra/ssg'
-${layoutConfig ? `import layoutConfig from '${layoutConfig}'` : ''}
+import withTheme from '${themePath}'
+import { withSSG } from 'quiet/ssg'
+${themeConfigPath ? `import themeConfig from '${themeConfigPath}'` : ''}
 
 `
 
-  const suffix = `\n\nexport default function NextraPage (props) {
-    return withSSG(withLayout({
+  const suffix = `\n\nexport default function QuietPage (props) {
+    return withSSG(withTheme({
       filename: "${slash(filename)}",
       route: "${slash(route)}",
       meta: ${JSON.stringify(data)},
       pageMap: ${JSON.stringify(pageMap)}
-    }, ${layoutConfig ? 'layoutConfig' : 'null'}))(props)
+    }, ${themeConfigPath ? 'themeConfig' : 'null'}))(props)
 }`
 
   // Add imports and exports to the source
   source = prefix + '\n' + source + '\n' + suffix
 
-  return callback(null, source)
+  return callback!(null, source)
 }

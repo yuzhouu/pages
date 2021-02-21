@@ -1,4 +1,4 @@
-export default function filterRouteLocale(pageMap, locale, defaultLocale) {
+export default function filterRouteLocale(pageMap: any[], locale: string, defaultLocale: string) {
   const isDefaultLocale = !locale || locale === defaultLocale
 
   const filteredPageMap = []

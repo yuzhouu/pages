@@ -23,9 +23,13 @@
     "slash": "^3.0.0"
   },
   "peerDependencies": {
-    "react": "^16.13.1 || ^17.0.1"
+    "next": "^10.0.7"
   },
   "devDependencies": {
-    "microbundle": "^0.12.4"
+    "@types/loader-utils": "^2.0.1",
+    "@types/react": "^17.0.2",
+    "microbundle": "^0.12.4",
+    "next": "^10.0.7",
+    "react": "^17.0.1"
   }
 }

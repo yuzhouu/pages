@@ -1,21 +1,24 @@
+import { QuietConfig } from './types'
 const defaultExtensions = ['js', 'jsx', 'ts', 'tsx']
 const markdownExtensions = ['md', 'mdx']
 const markdownExtensionTest = /\.mdx?$/
 
-export default (theme, themeConfig) => (nextConfig = {}) => {
-  const nextraConfig =
+export default (theme: string | QuietConfig, themeConfig?: string) => (
+  nextConfig: { [k: string]: any } = {}
+) => {
+  const quietConfig: QuietConfig =
     typeof theme === 'string'
       ? {
           theme,
           themeConfig,
         }
       : theme
-  const locales = nextConfig.i18n ? nextConfig.i18n.locales : null
-  const defaultLocale = nextConfig.i18n ? nextConfig.i18n.defaultLocale : null
+  const locales = nextConfig.i18n?.locales
+  const defaultLocale = nextConfig.i18n?.defaultLocale
 
   let pageExtensions = nextConfig.pageExtensions || [...defaultExtensions]
   if (locales) {
-    console.log('You have i18n enabled for Nextra.')
+    console.log('You have i18n enabled for Quiet.')
     if (!defaultLocale) {
       console.error('Default locale is missing.')
     }
@@ -30,7 +33,7 @@ export default (theme, themeConfig) => (nextConfig = {}) => {
     nextConfig.rewrites = async () => {
       return [
         ...originalRewrites,
-        ...locales.flatMap((locale) => [
+        ...locales.flatMap((locale: string) => [
           {
             source: `/${locale}`,
             destination: `/index.${locale}`,
@@ -55,20 +58,20 @@ export default (theme, themeConfig) => (nextConfig = {}) => {
 
   return Object.assign({}, nextConfig, {
     pageExtensions,
-    webpack(config, options) {
+    webpack(config: any, options: any) {
       config.module.rules.push({
         test: markdownExtensionTest,
         use: [
           options.defaultLoaders.babel,
           {
             loader: '@mdx-js/loader',
-            options: nextraConfig.mdxOptions,
+            options: quietConfig.mdxOptions,
           },
           {
-            loader: 'nextra/loader',
+            loader: '@yuzhouu/quiet/loader',
             options: {
-              theme: nextraConfig.theme,
-              themeConfig: nextraConfig.themeConfig,
+              theme: quietConfig.theme,
+              themeConfig: quietConfig.themeConfig,
               locales,
               defaultLocale,
             },
