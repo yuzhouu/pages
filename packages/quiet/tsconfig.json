@@ -6,7 +6,7 @@
     "lib": [],
     "allowJs": true,
     "checkJs": false,
-    "jsx": "react-jsx",
+    "jsx": "react",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,

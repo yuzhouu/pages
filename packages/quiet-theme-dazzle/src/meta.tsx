@@ -1,7 +1,15 @@
 import React from 'react'
 import Link from 'next/link'
+import { PostMeta } from './types'
 
-export default function Meta({ author, date, tag, back }) {
+export default function Meta({
+  author,
+  date,
+  tag,
+  back,
+}: {
+  back?: string
+} & PostMeta) {
   const authorNode = author ? author : null
   const dateNode = date ? <time>{new Date(date).toDateString()}</time> : null
   const tags = tag ? tag.split(',').map((s) => s.trim()) : []

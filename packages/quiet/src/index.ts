@@ -23,11 +23,6 @@ export default (theme: string | QuietConfig, themeConfig?: string) => (
       console.error('Default locale is missing.')
     }
 
-    // Exclude other locales to ensure there're no route conflicts.
-    // pageExtensions = pageExtensions.concat(
-    //   markdownExtensions.map(extension => defaultLocale + '.' + extension)
-    // )
-
     // We have to map locales in the path to their correct pages.
     const originalRewrites = nextConfig.rewrites ? nextConfig.rewrites() : []
     nextConfig.rewrites = async () => {

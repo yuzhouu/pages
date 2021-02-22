@@ -1,70 +1,41 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
-import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import Meta from './meta'
-import Nav from './nav'
-import MDXTheme from './mdx-theme'
-
+import Layout from './layout'
 import traverse from './utils/traverse'
 import getTitle from './utils/get-title'
 import getTags from './utils/get-tags'
-import sortDate from './utils/sort-date'
+import sortPage from './utils/sort-page'
+import { ThemeConfig, ThemeMeta } from './types'
+import { Page, PageDir } from '@yuzhouu/quiet'
 
-const Layout = ({ config, meta, navPages, postList, back, title, children }) => {
-  const [titleNode, contentNodes] = getTitle(children)
-  const type = meta.type || 'post'
-
-  return (
-    <React.Fragment>
-      <Head>
-        <title>{title}</title>
-        {config.head || null}
-      </Head>
-      <article className="container prose prose-sm md:prose">
-        {titleNode}
-        {type === 'post' ? (
-          <Meta {...meta} back={back} config={config} />
-        ) : (
-          <Nav navPages={navPages} />
-        )}
-        <MDXTheme>
-          {contentNodes}
-          {type === 'post' ? config.postFooter : null}
-        </MDXTheme>
-        {postList}
-
-        {config.footer}
-      </article>
-    </React.Fragment>
-  )
-}
-
-export default (opts, _config) => {
-  const config = Object.assign(
+export default (meta: ThemeMeta, _config: Omit<ThemeConfig, 'readMore' | 'footer'>) => {
+  const config: ThemeConfig = Object.assign(
     {
       readMore: 'Read More →',
       footer: (
-        <small style={{ display: 'block', marginTop: '8rem' }}>CC BY-NC 4.0 2020 © Shu Ding.</small>
+        <small style={{ display: 'block', marginTop: '8rem' }}>CC BY-NC 4.0 2020 © Yu Zhou.</small>
       ),
-      postFooter: null,
     },
     _config
   )
 
   // gather info for tag/posts pages
-  let posts = null
-  let navPages = []
-  const type = opts.meta.type || 'post'
-  const route = opts.route
+  let posts: Page[] | null = null
+  let navPages: Array<Page & { active?: boolean }> = []
+  const type = meta.matterData.type || 'post'
+  const route = meta.route
 
   // This only renders once per page
   if (type === 'posts' || type === 'tag' || type === 'page') {
     posts = []
-    // let's get all posts
-    traverse(opts.pageMap, (page) => {
+    // get all posts
+    traverse(meta.pageList, (page) => {
+      if ((page as PageDir).children) return
+      if (page.name.startsWith('_')) return
+
       if (page.frontMatter && ['page', 'posts'].includes(page.frontMatter.type)) {
         if (page.route === route) {
           navPages.push({ ...page, active: true })
@@ -72,27 +43,25 @@ export default (opts, _config) => {
           navPages.push(page)
         }
       }
-      if (page.children) return
-      if (page.name.startsWith('_')) return
+
       if (type === 'posts' && !page.route.startsWith(route === '/' ? route : route + '/')) return
       if (
         type !== 'page' &&
         (!page.frontMatter || !page.frontMatter.type || page.frontMatter.type === 'post')
       ) {
-        posts.push(page)
+        posts!.push(page)
       }
     })
-    posts = posts.sort(sortDate)
-    navPages = navPages.sort(sortDate)
+    posts = posts.sort(sortPage as any)
+    navPages = navPages.sort(sortPage as any)
   }
 
   // back button
-  let back = null
+  let back: string | undefined
   if (type !== 'post') {
-    back = null
   } else {
-    const parentPages = []
-    traverse(opts.pageMap, (page) => {
+    const parentPages: Page[] = []
+    traverse(meta.pageList, (page) => {
       if (
         route !== page.route &&
         (route + '/').startsWith(page.route === '/' ? '/' : page.route + '/')
@@ -108,20 +77,20 @@ export default (opts, _config) => {
     }
   }
 
-  return (props) => {
+  return (props: React.PropsWithChildren<{ tagName?: string; [key: string]: any }>) => {
     const router = useRouter()
     const { query } = router
 
-    const type = opts.meta.type || 'post'
-    const tagName = type === 'tag' ? query.tag : null
+    const type = meta.matterData.type || 'post'
+    const tagName = type === 'tag' ? (query.tag as string) : undefined
 
     const [titleNode] = getTitle(props.children)
     const title =
-      opts.meta.title ||
+      meta.matterData.title ||
       (typeof tagName === 'undefined'
         ? null
         : titleNode
-        ? ReactDOMServer.renderToStaticMarkup(titleNode.props.children)
+        ? ReactDOMServer.renderToStaticMarkup((titleNode as any).props.children)
         : null) ||
       ''
 
@@ -175,7 +144,7 @@ export default (opts, _config) => {
         navPages={navPages}
         back={back}
         title={title}
-        {...opts}
+        matterData={{ ...meta.matterData }}
         {...props}
       />
     )

@@ -12,8 +12,9 @@ coverage
 .next
 out
 
-# production
+# bundle file
 build
+dist
 
 # misc
 .DS_Store

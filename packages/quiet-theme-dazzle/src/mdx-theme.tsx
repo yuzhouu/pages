@@ -3,9 +3,9 @@ import { MDXProvider } from '@mdx-js/react'
 import slugify from '@sindresorhus/slugify'
 import Link from 'next/link'
 import React from 'react'
-import Highlight, { defaultProps } from 'prism-react-renderer'
+import Highlight, { defaultProps, PrismTheme } from 'prism-react-renderer'
 
-const THEME = {
+const THEME: PrismTheme = {
   plain: {
     color: '#000',
     backgroundColor: 'transparent',
@@ -73,7 +73,7 @@ const THEME = {
 
 // Anchor links
 
-const HeaderLink = ({ tag: Tag, children, ...props }) => {
+const HeaderLink = ({ tag: Tag, children, ...props }: any) => {
   const slug = slugify(ReactDOMServer.renderToStaticMarkup(children))
   return (
     <Tag {...props}>
@@ -88,7 +88,7 @@ const HeaderLink = ({ tag: Tag, children, ...props }) => {
   )
 }
 
-const H2 = ({ children, ...props }) => {
+const H2 = ({ children, ...props }: React.PropsWithChildren<any>) => {
   return (
     <HeaderLink tag="h2" {...props}>
       {children}
@@ -96,7 +96,7 @@ const H2 = ({ children, ...props }) => {
   )
 }
 
-const H3 = ({ children, ...props }) => {
+const H3 = ({ children, ...props }: React.PropsWithChildren<any>) => {
   return (
     <HeaderLink tag="h3" {...props}>
       {children}
@@ -104,7 +104,7 @@ const H3 = ({ children, ...props }) => {
   )
 }
 
-const H4 = ({ children, ...props }) => {
+const H4 = ({ children, ...props }: React.PropsWithChildren<any>) => {
   return (
     <HeaderLink tag="h4" {...props}>
       {children}
@@ -112,7 +112,7 @@ const H4 = ({ children, ...props }) => {
   )
 }
 
-const H5 = ({ children, ...props }) => {
+const H5 = ({ children, ...props }: React.PropsWithChildren<any>) => {
   return (
     <HeaderLink tag="h5" {...props}>
       {children}
@@ -120,7 +120,7 @@ const H5 = ({ children, ...props }) => {
   )
 }
 
-const H6 = ({ children, ...props }) => {
+const H6 = ({ children, ...props }: React.PropsWithChildren<any>) => {
   return (
     <HeaderLink tag="h6" {...props}>
       {children}
@@ -128,7 +128,7 @@ const H6 = ({ children, ...props }) => {
   )
 }
 
-const A = ({ children, ...props }) => {
+const A = ({ children, ...props }: React.PropsWithChildren<any>) => {
   const isExternal = props.href && props.href.startsWith('https://')
   if (isExternal) {
     return (
@@ -144,7 +144,7 @@ const A = ({ children, ...props }) => {
   )
 }
 
-const Code = ({ children, className, highlight, ...props }) => {
+const Code = ({ children, className, highlight, ...props }:any) => {
   if (!className) return <code {...props}>{children}</code>
 
   const highlightedLines = highlight ? highlight.split(',').map(Number) : []
@@ -166,7 +166,7 @@ const Code = ({ children, className, highlight, ...props }) => {
                       margin: '0 -1rem',
                       padding: '0 1rem',
                     }
-                  : null
+                  : undefined
               }
             >
               {line.map((token, key) => (
@@ -190,6 +190,6 @@ const components = {
   code: Code,
 }
 
-export default ({ children }) => {
+export default ({ children }: {children: React.ReactChildren | React.ReactFragment}) => {
   return <MDXProvider components={components}>{children}</MDXProvider>
 }

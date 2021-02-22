@@ -1,25 +1,29 @@
-export default function filterRouteLocale(pageMap: any[], locale: string, defaultLocale: string) {
-  const isDefaultLocale = !locale || locale === defaultLocale
+import { Page, PageDir } from './types'
 
-  const filteredPageMap = []
-
+export default function filterRouteLocale(
+  pageMap: Page[],
+  locale: string,
+  defaultLocale?: string
+): Page[] {
+  const filteredPageList = []
   // We fallback to the default locale
-  const fallbackPages = {}
+  const fallbackPages: { [key: string]: Page | null } = {}
 
   for (const page of pageMap) {
-    if (page.children) {
-      filteredPageMap.push({
+    if ((page as PageDir).children) {
+      filteredPageList.push({
         ...page,
-        children: filterRouteLocale(page.children, locale, defaultLocale),
+        children: filterRouteLocale((page as PageDir).children, locale, defaultLocale),
       })
       continue
     }
 
-    const localDoesMatch = (!page.locale && isDefaultLocale) || page.locale === locale
+    const localDoesMatch =
+      (!page.locale && (!defaultLocale || locale === defaultLocale)) || page.locale === locale
 
     if (localDoesMatch) {
       fallbackPages[page.name] = null
-      filteredPageMap.push(page)
+      filteredPageList.push(page)
     } else {
       if (fallbackPages[page.name] !== null && (!page.locale || page.locale === defaultLocale)) {
         fallbackPages[page.name] = page
@@ -29,9 +33,9 @@ export default function filterRouteLocale(pageMap: any[], locale: string, defaul
 
   for (const name in fallbackPages) {
     if (fallbackPages[name]) {
-      filteredPageMap.push(fallbackPages[name])
+      filteredPageList.push(fallbackPages[name]!)
     }
   }
 
-  return filteredPageMap
+  return filteredPageList
 }
