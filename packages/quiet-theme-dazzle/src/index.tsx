@@ -8,10 +8,10 @@ import traverse from './utils/traverse'
 import getTitle from './utils/get-title'
 import getTags from './utils/get-tags'
 import sortPage from './utils/sort-page'
-import { ThemeConfig, ThemeMeta } from './types'
+import { ThemeConfig, PageMeta } from './types'
 import { Page, PageDir } from '@yuzhouu/quiet'
 
-export default (meta: ThemeMeta, _config: Omit<ThemeConfig, 'readMore' | 'footer'>) => {
+export default (meta: PageMeta, _config: Omit<ThemeConfig, 'readMore' | 'footer'>) => {
   const config: ThemeConfig = Object.assign(
     {
       readMore: 'Read More →',
@@ -25,8 +25,14 @@ export default (meta: ThemeMeta, _config: Omit<ThemeConfig, 'readMore' | 'footer
   // gather info for tag/posts pages
   let posts: Page[] | null = null
   let navPages: Array<Page & { active?: boolean }> = []
-  const type = meta.matterData.type || 'post'
+  const matterType = meta.matterData.type
   const route = meta.route
+
+  if (matterType) {
+    traverse(meta.pageList, page => {
+
+    })
+  }
 
   // This only renders once per page
   if (type === 'posts' || type === 'tag' || type === 'page') {
@@ -58,7 +64,7 @@ export default (meta: ThemeMeta, _config: Omit<ThemeConfig, 'readMore' | 'footer
 
   // back button
   let back: string | undefined
-  if (type !== 'post') {
+  if (matterType !== 'post') {
   } else {
     const parentPages: Page[] = []
     traverse(meta.pageList, (page) => {
@@ -82,12 +88,12 @@ export default (meta: ThemeMeta, _config: Omit<ThemeConfig, 'readMore' | 'footer
     const { query } = router
 
     const type = meta.matterData.type || 'post'
-    const tagName = type === 'tag' ? (query.tag as string) : undefined
+    const queryTag = type === 'tag' ? (query.tag as string) : undefined
 
     const [titleNode] = getTitle(props.children)
     const title =
       meta.matterData.title ||
-      (typeof tagName === 'undefined'
+      (typeof queryTag === 'undefined'
         ? null
         : titleNode
         ? ReactDOMServer.renderToStaticMarkup((titleNode as any).props.children)
@@ -97,9 +103,9 @@ export default (meta: ThemeMeta, _config: Omit<ThemeConfig, 'readMore' | 'footer
     const postList = posts ? (
       <ul>
         {posts.map((post) => {
-          if (tagName) {
+          if (queryTag) {
             const tags = getTags(post)
-            if (!tags.includes(tagName)) {
+            if (!tags.includes(queryTag)) {
               return null
             }
           } else if (type === 'tag') {

@@ -8,28 +8,16 @@ function removeExtension(name: string): string {
   return match !== null ? match[1] : ''
 }
 
-const parseJsonFile = (content: string, path: string) => {
-  let parsed = {}
-  try {
-    parsed = JSON.parse(content)
-  } catch (err) {
-    console.error(`Error parsing ${path}, make sure it's a valid JSON \n` + err)
-  }
-
-  return parsed
-}
-
 export function getLocaleFromFilename(name: string): string | undefined {
-  const localeRegex = /\.([a-zA-Z-]+)?\.(mdx?|jsx?|json)$/
+  const localeRegex = /\.([a-zA-Z-]+)?\.(mdx?|jsx?|json|tsx?)$/
   const match = name.match(localeRegex)
   if (match) return match[1]
   return undefined
 }
 
 export default async function getPageList(currentResourcePath: string): Promise<[Page[], string]> {
-  const extension = /\.(mdx?|jsx?)$/
+  const extension = /\.(mdx?|jsx?|tsx?)$/
   const mdxExtension = /\.mdx?$/
-  const metaExtension = /meta\.?([a-zA-Z-]+)?\.json/
   let activeRoute = ''
 
   async function getFiles(dir: string, parsentRoute: string): Promise<Page[]> {
@@ -68,7 +56,7 @@ export default async function getPageList(currentResourcePath: string): Promise<
                 return {
                   name: removeExtension(f.name),
                   route: currentRoute,
-                  frontMatter: data,
+                  matterData: data,
                   locale: getLocaleFromFilename(f.name),
                 }
               }
@@ -78,16 +66,6 @@ export default async function getPageList(currentResourcePath: string): Promise<
               name: removeExtension(f.name),
               route: currentRoute,
               locale: getLocaleFromFilename(f.name),
-            }
-          } else if (metaExtension.test(f.name)) {
-            const content = await fs.readFile(filePath, 'utf-8')
-            const meta = parseJsonFile(content, filePath)
-            const locale = f.name.match(metaExtension)![1]
-
-            return {
-              name: 'meta.json',
-              meta,
-              locale,
             }
           }
         })

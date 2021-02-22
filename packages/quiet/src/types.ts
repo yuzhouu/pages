@@ -26,14 +26,4 @@ export type PageMD = {
   locale?: string
 }
 
-export type PageMeta = {
-  name: string
-  meta: {
-    [key: string]: any
-  }
-  locale?: string
-  route: never
-  frontMatter: never
-}
-
-export type Page = PageDir | PageMD | PageMeta
+export type Page = PageDir | PageMD

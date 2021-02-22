@@ -4,7 +4,7 @@ import Meta from './meta'
 import Nav from './nav'
 import MDXTheme from './mdx-theme'
 import getTitle from './utils/get-title'
-import { ThemeConfig, ThemeMeta } from './types'
+import { ThemeConfig, PageMeta } from './types'
 import { Page } from '@yuzhouu/quiet'
 
 export default function Layout({
@@ -17,7 +17,7 @@ export default function Layout({
   children,
 }: {
   config: ThemeConfig
-  matterData: ThemeMeta['matterData']
+  matterData: PageMeta['matterData']
   navPages: Array<Page & { active?: boolean }>
   postList: JSX.Element | null
   back: string | undefined

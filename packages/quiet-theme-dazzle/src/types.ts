@@ -6,7 +6,7 @@ export type ThemeConfig = {
   footer: JSX.Element
 }
 
-export type ThemeMeta = {
+export type PageMeta = {
   filename: string
   route: string
   matterData: { [key: string]: any } & PostMeta
@@ -18,4 +18,5 @@ export type PostMeta = {
   date?: string | number
   tag?: string
   description?: string
+  status?: 'public' | 'draft'
 }
