@@ -1,26 +1,41 @@
 import React from 'react'
 import Link from 'next/link'
-import { PostMeta } from './types'
+import { useMetaContext } from './meta-context'
+import { Page } from '@yuzhouu/quiet'
+import traverse from './utils/traverse'
 
-export default function Meta({
-  author,
-  date,
-  tag,
-  back,
-}: {
-  back?: string
-} & PostMeta) {
-  const authorNode = author ? author : null
-  const dateNode = date ? <time>{new Date(date).toDateString()}</time> : null
-  const tags = tag ? tag.split(',').map((s) => s.trim()) : []
+export default function Meta() {
+  const meta = useMetaContext()!
+  const currentRoute = meta.route
+  const tags = meta.matterData.tag ? meta.matterData.tag.split(',').map((s) => s.trim()) : []
+
+  let back: string | null = null
+  if (meta.matterData.type === 'post') {
+    const parentPages: Page[] = []
+    traverse(meta.pageList, (page) => {
+      if (
+        currentRoute !== page.route &&
+        (currentRoute + '/').startsWith(page.route === '/' ? '/' : page.route + '/')
+      ) {
+        parentPages.push(page)
+      }
+    })
+    const parentPage = parentPages
+      .reverse()
+      .find((page) => page.frontMatter && page.frontMatter.type === 'posts')
+    if (parentPage) {
+      back = parentPage.route
+    }
+  }
 
   return (
     <div className="meta-line">
       <div className="meta">
-        {authorNode}
-        {authorNode && dateNode ? ', ' : null}
-        {dateNode}
-        {(authorNode || dateNode) && tags.length ? ' • ' : null}
+        {meta.matterData.author}
+        {meta.matterData.author && meta.matterData.date ? ', ' : null}
+        {meta.matterData.date && <time>{new Date(meta.matterData.date)}</time>}
+      </div>
+      <div>
         {tags.map((t) => {
           return (
             <Link key={t} href="/tags/[tag]" as={`/tags/${t}`}>

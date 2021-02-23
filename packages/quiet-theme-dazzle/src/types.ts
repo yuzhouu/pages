@@ -2,7 +2,6 @@ import { Page } from '@yuzhouu/quiet'
 
 export type ThemeConfig = {
   head?: JSX.Element
-  readMore: string
   footer: JSX.Element
 }
 
@@ -14,9 +13,11 @@ export type PageMeta = {
 }
 
 export type PostMeta = {
+  title?: string
   author?: string
   date?: string | number
   tag?: string
   description?: string
-  status?: 'public' | 'draft'
+  series?: string
+  type?: 'posts' | 'post' | 'tag'
 }
