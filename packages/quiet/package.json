@@ -12,7 +12,7 @@
     "ssg.js",
     "loader.js"
   ],
-  "types": "dist/types.d.ts",
+  "types": "./dist/types.d.ts",
   "scripts": {
     "build": "rm -rf dist && microbundle src/index.ts src/ssg.ts src/loader.ts -f cjs -o dist --no-sourcemap --target=node",
     "dev": "microbundle watch src/index.ts src/ssg.ts src/loader.ts -o dist --no-sourcemap --target=node"
