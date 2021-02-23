@@ -15,7 +15,7 @@
   "scripts": {
     "build": "yarn run build:clean && yarn run build:tailwind && yarn run build:tsx",
     "build:clean": "rm -rf dist",
-    "build:tailwind": "NODE_ENV=production tailwindcss build src/style.css -o style.css -c tailwind.config.js",
+    "build:tailwind": "NODE_ENV=production tailwindcss build src/style.css -o dist/style.css -c tailwind.config.js",
     "build:tsx": "NODE_ENV=production microbundle src/*.tsx -f cjs -o dist --no-sourcemap --jsx React.createElement --target node",
     "dev:tsx": "microbundle watch src/*.tsx -f cjs -o dist --no-sourcemap --jsx React.createElement --target node"
   },

@@ -144,7 +144,7 @@ const A = ({ children, ...props }: React.PropsWithChildren<any>) => {
   )
 }
 
-const Code = ({ children, className, highlight, ...props }:any) => {
+const Code = ({ children, className, highlight, ...props }: any) => {
   if (!className) return <code {...props}>{children}</code>
 
   const highlightedLines = highlight ? highlight.split(',').map(Number) : []
@@ -190,6 +190,6 @@ const components = {
   code: Code,
 }
 
-export default ({ children }: {children: React.ReactChildren | React.ReactFragment}) => {
+export default ({ children }: { children: React.ReactChildren | React.ReactFragment }) => {
   return <MDXProvider components={components}>{children}</MDXProvider>
 }
