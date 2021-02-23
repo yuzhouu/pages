@@ -3,9 +3,7 @@ const defaultExtensions = ['js', 'jsx', 'ts', 'tsx']
 const markdownExtensions = ['md', 'mdx']
 const markdownExtensionTest = /\.mdx?$/
 
-export default (theme: string | QuietConfig, themeConfig?: string) => (
-  nextConfig: { [k: string]: any } = {}
-) => {
+export default (theme: string | QuietConfig, themeConfig?: string) => (nextConfig: any = {}) => {
   const quietConfig: QuietConfig =
     typeof theme === 'string'
       ? {

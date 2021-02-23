@@ -53,12 +53,11 @@ export default async function (this: any, source: string) {
     }
   }
 
-  const prefix = `
-    import { withSSG } from 'quiet/ssg'
-    import withTheme from '${themePath}'
-    ${themeConfigPath ? `import themeConfig from '${themeConfigPath}'` : ''}`
+  const prefix = `\nimport { withSSG } from '@yuzhouu/quiet/ssg'
+import withTheme from '${themePath}'
+${themeConfigPath ? `import themeConfig from '${themeConfigPath}'` : ''}`
 
-  const suffix = `\n\nexport default function QuietPage (props) {
+  const suffix = `export default function QuietPage (props) {
       return withSSG(
         withTheme(
           {
@@ -73,7 +72,7 @@ export default async function (this: any, source: string) {
     }`
 
   // Add imports and exports to the source
-  source = prefix + '\n' + source + '\n' + suffix
+  source = prefix + '\n\n' + source + '\n\n' + suffix
 
   return callback!(null, source)
 }

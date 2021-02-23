@@ -18,13 +18,13 @@
     "dev": "microbundle watch src/index.ts src/ssg.ts src/loader.ts -o dist --no-sourcemap --target=node"
   },
   "dependencies": {
-    "@mdx-js/loader": "^2.0.0-next.8",
     "gray-matter": "^4.0.2",
     "loader-utils": "^2.0.0",
     "react": "^17.0.1",
     "slash": "^3.0.0"
   },
   "peerDependencies": {
+    "@mdx-js/loader": "^2.0.0-next.8",
     "next": "^10.0.7"
   },
   "devDependencies": {
