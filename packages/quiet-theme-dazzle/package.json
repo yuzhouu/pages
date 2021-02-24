@@ -12,6 +12,9 @@
     "style.css"
   ],
   "types": "./dist/types.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "yarn run build:clean && yarn run build:tailwind && yarn run build:tsx",
     "build:clean": "rm -rf dist",
