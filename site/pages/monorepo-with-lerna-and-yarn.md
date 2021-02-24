@@ -8,7 +8,7 @@ date: 2021/2/14
 
 直接`lerna bootstrap --hoist`，lerna 上来就是一个报错`hoist is not supported with --npm-client=yarn, use yarn workspaces instead`, 同时给出了一个提示`A guide is available at https://yarnpkg.com/blog/2017/08/02/introducing-workspaces/`。
 
-好吧照提示中改了一下，在 lerna.json 中添加`"useWorkspaces": true`，同时将 packages 字段从 lerna.json 中移到 package.json 中的 workspaces 字段，然后 lerna bootstrap，这里 yarn 应该时全权接手了依赖安装，共同依赖全装在了根目录，问题解决。
+好吧照提示中改了一下，在 lerna.json 中添加`"useWorkspaces": true`，同时将 packages 字段从 lerna.json 中移到 package.json 中的 workspaces 字段，然后 lerna bootstrap，这里 yarn 全权接手了依赖安装，共同依赖全装在了根目录，问题解决。
 
 修改前
 
