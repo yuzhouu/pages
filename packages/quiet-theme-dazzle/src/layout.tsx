@@ -19,7 +19,10 @@ export default function Layout({
   const [titleNode, contentNodes] = getTitle(children)
   const type = matterData.type || 'post'
   const title =
-    matterData.title || titleNode ? ReactDOMServer.renderToStaticMarkup(titleNode as any) : ''
+    matterData.title ||
+    (titleNode
+      ? ReactDOMServer.renderToStaticMarkup((titleNode as React.ReactElement).props.children)
+      : '')
 
   return (
     <React.Fragment>
@@ -28,7 +31,7 @@ export default function Layout({
         {config.head || null}
       </Head>
       <article className="container prose prose-sm md:prose">
-        {titleNode}
+        <h1>{title}</h1>
         {type === 'post' && <Meta />}
         <MDXTheme>{contentNodes!}</MDXTheme>
         {(type === 'posts' || type === 'tag') && Posts}

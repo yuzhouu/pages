@@ -33,7 +33,7 @@ export default function Meta() {
       <div className="meta">
         {meta.matterData.author}
         {meta.matterData.author && meta.matterData.date ? ', ' : null}
-        {meta.matterData.date && <time>{new Date(meta.matterData.date)}</time>}
+        {meta.matterData.date && <time>{new Date(meta.matterData.date).toLocaleDateString()}</time>}
       </div>
       <div>
         {tags.map((t) => {

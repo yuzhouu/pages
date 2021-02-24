@@ -42,7 +42,9 @@ export default function Posts() {
 
         const postTitle = post.frontMatter?.title || post.name
         const postDate = post.frontMatter?.date ? (
-          <time className="post-item-date">{new Date(post.frontMatter.date).toDateString()}</time>
+          <time className="post-item-date">
+            {new Date(post.frontMatter.date).toLocaleDateString()}
+          </time>
         ) : null
         const postDescription = post.frontMatter?.frontMatter.description ? (
           <p className="post-item-desc">
