@@ -43,5 +43,6 @@
     "rollup": "^2.39.1",
     "tailwindcss": "^1.8.10",
     "typescript": "^4.2.2"
-  }
+  },
+  "gitHead": "3c1eb29b1ecdc5325f9494b8da9fd9a1db1945d2"
 }
