@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "lerna run build --scope=@yuzhouu/quiet --scope=@yuzhouu/quiet-theme-dazzle",
     "build": "next build",
     "start": "next start"
   },
