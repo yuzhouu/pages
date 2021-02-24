@@ -34,7 +34,7 @@ export default function Layout({
         <h1>{title}</h1>
         {type === 'post' && <Meta />}
         <MDXTheme>{contentNodes!}</MDXTheme>
-        {(type === 'posts' || type === 'tag') && Posts}
+        {(type === 'posts' || type === 'tag') && <Posts />}
 
         {config.footer}
       </article>

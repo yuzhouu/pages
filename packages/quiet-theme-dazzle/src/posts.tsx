@@ -2,22 +2,22 @@ import React from 'react'
 import Link from 'next/link'
 import getTags from './utils/get-tags'
 import { PageDir, PageMD } from '@yuzhouu/quiet'
-import { useMetaContext } from './meta-context'
+import { useCurrentPageContext } from './current-page-context'
 import { useRouter } from 'next/router'
 import traverse from './utils/traverse'
 import sortPage from './utils/sort-page'
 
 export default function Posts() {
-  const meta = useMetaContext()!
+  const curPage = useCurrentPageContext()!
   const { query } = useRouter()
-  const type = meta.matterData.type
+  const type = curPage.matterData.type
   const queryTag = type === 'tag' ? (query.tag as string) : undefined
   let posts: PageMD[] = []
 
-  traverse(meta.pageList, (page) => {
+  traverse(curPage.pageList, (page) => {
     if ((page as PageDir).children) return
     if (page.name.startsWith('_')) return
-    if (page.frontMatter && page.frontMatter.type !== 'post') return
+    if (!page.matterData || page.matterData.type !== 'post') return
     if (queryTag) {
       const tags = getTags(page)
       if (!tags.includes(queryTag)) {
@@ -31,24 +31,15 @@ export default function Posts() {
   return (
     <ul>
       {posts.map((post) => {
-        if (queryTag) {
-          const tags = getTags(post)
-          if (!tags.includes(queryTag)) {
-            return null
-          }
-        } else if (type === 'tag') {
-          return null
-        }
-
-        const postTitle = post.frontMatter?.title || post.name
-        const postDate = post.frontMatter?.date ? (
+        const postTitle = post.matterData?.title || post.name
+        const postDate = post.matterData?.date ? (
           <time className="post-item-date">
-            {new Date(post.frontMatter.date).toLocaleDateString()}
+            {new Date(post.matterData.date).toLocaleDateString()}
           </time>
         ) : null
-        const postDescription = post.frontMatter?.frontMatter.description ? (
+        const postDescription = post.matterData?.description ? (
           <p className="post-item-desc">
-            {post.frontMatter.description}
+            {post.matterData.description}
 
             <Link href={post.route}>
               <a className="post-item-more">-&gt;</a>

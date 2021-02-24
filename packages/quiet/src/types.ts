@@ -14,13 +14,13 @@ export type PageDir = {
   children: Page[]
   route: string
   locale: never
-  frontMatter: never
+  matterData: never
 }
 
 export type PageMD = {
   name: string
   route: string
-  frontMatter?: {
+  matterData?: {
     [key: string]: any
   }
   locale?: string

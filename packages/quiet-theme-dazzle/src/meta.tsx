@@ -1,18 +1,18 @@
 import React from 'react'
 import Link from 'next/link'
-import { useMetaContext } from './meta-context'
+import { useCurrentPageContext } from './current-page-context'
 import { Page } from '@yuzhouu/quiet'
 import traverse from './utils/traverse'
 
 export default function Meta() {
-  const meta = useMetaContext()!
-  const currentRoute = meta.route
-  const tags = meta.matterData.tag ? meta.matterData.tag.split(',').map((s) => s.trim()) : []
+  const curPage = useCurrentPageContext()!
+  const currentRoute = curPage.route
+  const tags = curPage.matterData.tag ? curPage.matterData.tag.split(',').map((s) => s.trim()) : []
 
   let back: string | null = null
-  if (meta.matterData.type === 'post') {
+  if (curPage.matterData.type === 'post') {
     const parentPages: Page[] = []
-    traverse(meta.pageList, (page) => {
+    traverse(curPage.pageList, (page) => {
       if (
         currentRoute !== page.route &&
         (currentRoute + '/').startsWith(page.route === '/' ? '/' : page.route + '/')
@@ -22,7 +22,7 @@ export default function Meta() {
     })
     const parentPage = parentPages
       .reverse()
-      .find((page) => page.frontMatter && page.frontMatter.type === 'posts')
+      .find((page) => page.matterData && page.matterData.type === 'posts')
     if (parentPage) {
       back = parentPage.route
     }
@@ -31,9 +31,11 @@ export default function Meta() {
   return (
     <div className="meta-line">
       <div className="meta">
-        {meta.matterData.author}
-        {meta.matterData.author && meta.matterData.date ? ', ' : null}
-        {meta.matterData.date && <time>{new Date(meta.matterData.date).toLocaleDateString()}</time>}
+        {curPage.matterData.author}
+        {curPage.matterData.author && curPage.matterData.date ? ', ' : null}
+        {curPage.matterData.date && (
+          <time>{new Date(curPage.matterData.date).toLocaleDateString()}</time>
+        )}
       </div>
       <div>
         {tags.map((t) => {
