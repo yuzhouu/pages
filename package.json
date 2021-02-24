@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "prettier": "prettier --write .",
-    "postinstall": "husky install"
+    "postinstall": "husky install && lerna run build --scope=@yuzhouu/quiet --scope=@yuzhouu/quiet-theme-dazzle"
   },
   "workspaces": [
     "packages/*",
