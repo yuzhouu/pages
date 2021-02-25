@@ -1,7 +1,6 @@
-# Pages
-
-<div style="display:flex;align-items:center;justify-content:center;height:120px;">
-<img src="./site/public/pages.svg" style="width:64px;height:64px;"></img>
+<div align="center">
+<img src="./site/public/pages.svg"></img>
+<h3>PAGES</h3>
 </div>
 
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
