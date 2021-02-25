@@ -18,13 +18,12 @@
   "scripts": {
     "build": "yarn run build:clean && yarn run build:tailwind && yarn run build:tsx",
     "build:clean": "rm -rf dist",
-    "build:tailwind": "NODE_ENV=production tailwindcss build src/style.css -o dist/style.css -c tailwind.config.js",
+    "build:tailwind": "NODE_ENV=production postcss src/style.css -o dist/style.css",
     "build:tsx": "NODE_ENV=production node build.js"
   },
   "dependencies": {
     "@mdx-js/react": "^1.6.18",
     "@sindresorhus/slugify": "^1.1.0",
-    "@tailwindcss/typography": "^0.2.0",
     "prism-react-renderer": "^1.1.1"
   },
   "peerDependencies": {
@@ -36,15 +35,19 @@
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@rollup/plugin-typescript": "^8.2.0",
+    "@tailwindcss/typography": "^0.4.0",
     "@types/mdx-js__react": "^1.5.3",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
     "@yuzhouu/quiet": "^0.0.3",
+    "autoprefixer": "^10.2.4",
     "next": "^10.0.7",
+    "postcss": "^8.2.6",
+    "postcss-cli": "^8.3.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "rollup": "^2.39.1",
-    "tailwindcss": "^1.8.10",
+    "tailwindcss": "^2.0.3",
     "typescript": "^4.2.2"
   },
   "gitHead": "3c1eb29b1ecdc5325f9494b8da9fd9a1db1945d2"
