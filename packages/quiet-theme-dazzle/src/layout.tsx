@@ -7,13 +7,20 @@ import getTitle from './utils/get-title'
 import { ThemeConfig, PageMeta } from './types'
 import Posts from './posts'
 
+function normalizeFilename(name: string): string {
+  const match = name.match(/^([^.]+)/)
+  return match !== null ? match[1].split('-').join(' ') : ''
+}
+
 export default function Layout({
   config,
   matterData,
+  filename,
   children,
 }: {
   config: ThemeConfig
   matterData: PageMeta['matterData']
+  filename: string
   [key: string]: any
 }): JSX.Element {
   const [titleNode, contentNodes] = getTitle(children)
@@ -22,7 +29,7 @@ export default function Layout({
     matterData.title ||
     (titleNode
       ? ReactDOMServer.renderToStaticMarkup((titleNode as React.ReactElement).props.children)
-      : '')
+      : normalizeFilename(filename))
 
   return (
     <React.Fragment>

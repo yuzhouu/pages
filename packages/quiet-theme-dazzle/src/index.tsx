@@ -17,7 +17,12 @@ export default (currentPage: PageMeta, _config: Omit<ThemeConfig, 'footer'>) => 
   return (props: React.PropsWithChildren<{ tagName?: string; [key: string]: any }>) => {
     return (
       <CurrentPageContext.Provider value={currentPage}>
-        <Layout config={config} matterData={{ ...currentPage.matterData }} {...props} />
+        <Layout
+          config={config}
+          matterData={{ ...currentPage.matterData }}
+          filename={currentPage.filename}
+          {...props}
+        />
       </CurrentPageContext.Provider>
     )
   }
