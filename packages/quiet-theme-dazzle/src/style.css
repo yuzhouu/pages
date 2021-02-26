@@ -48,16 +48,6 @@ a.subheading {
   @apply text-gray-600;
 }
 
-.nav-line {
-  @apply mb-8 text-right;
-}
-.nav-line .nav-link {
-  @apply ml-3 text-gray-600;
-}
-.nav-line span.nav-link {
-  @apply ml-3 text-gray-900 cursor-default;
-}
-
 .post-item .post-item-date {
   @apply text-sm text-gray-600;
 }
