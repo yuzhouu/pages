@@ -1,11 +1,11 @@
 export type SortPageParam = {
-  frontMatter?: {
+  matterData?: {
     date?: string | number
   }
 }
 
-export default (a: SortPageParam, b: SortPageParam) => {
-  if (!a.frontMatter || !a.frontMatter.date) return -1
-  if (!b.frontMatter || !b.frontMatter.date) return -1
-  return new Date(a.frontMatter.date) > new Date(b.frontMatter.date) ? -1 : 1
+export default (a: SortPageParam, b: SortPageParam): number => {
+  if (!a.matterData || !a.matterData.date) return -1
+  if (!b.matterData || !b.matterData.date) return -1
+  return new Date(a.matterData.date) > new Date(b.matterData.date) ? -1 : 1
 }

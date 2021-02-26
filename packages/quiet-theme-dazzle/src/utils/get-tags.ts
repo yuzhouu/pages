@@ -1,7 +1,7 @@
-export default function getTags(page: { frontMatter?: { tag?: string } }) {
-  if (!page.frontMatter) {
+export default function getTags(page: { matterData?: { tag?: string } }) {
+  if (!page.matterData) {
     return []
   }
-  const tags = page.frontMatter.tag || ''
+  const tags = page.matterData.tag || ''
   return tags.split(',').map((s) => s.trim())
 }
