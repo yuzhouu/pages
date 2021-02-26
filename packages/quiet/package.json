@@ -1,6 +1,6 @@
 {
   "name": "@yuzhouu/quiet",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Next.js and MDX based site generator.",
   "main": "index.js",
   "repository": "https://github.com/yuzhouu/pages.git",
