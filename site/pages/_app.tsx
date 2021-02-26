@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import '../styles/globals.css'
 import '@yuzhouu/quiet-theme-dazzle/dist/style.css'
+import { GlobalStyles } from 'twin.macro'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -8,6 +8,7 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <GlobalStyles />
       <Component {...pageProps} />
     </>
   )
