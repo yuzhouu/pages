@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply px-4;
-}
-
 article {
   @apply block mx-auto pt-20 pb-32;
 }

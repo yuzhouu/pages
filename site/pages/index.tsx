@@ -1,7 +1,7 @@
-import Head from 'next/head'
+/** @jsx jsx */
+import { jsx } from '@emotion/react'
 import tw from 'twin.macro'
-import Header from '../components/header'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head'
 
 export default function Home() {
   return (
@@ -10,9 +10,7 @@ export default function Home() {
         <title>Pages</title>
       </Head>
 
-      <main className={styles.main}>
-        <Header />
-      </main>
+      <main></main>
     </div>
   )
 }
