@@ -14,7 +14,7 @@ export default (currentPage: PageMeta, _config: Omit<ThemeConfig, 'footer'>) => 
     _config
   )
 
-  return (props: React.PropsWithChildren<{ tagName?: string; [key: string]: any }>) => {
+  return (props: React.PropsWithChildren<{ [key: string]: any }>) => {
     return (
       <CurrentPageContext.Provider value={currentPage}>
         <Layout
