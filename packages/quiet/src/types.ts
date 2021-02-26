@@ -4,16 +4,12 @@ export type QuietConfig = {
   mdxOptions?: any
 }
 
-export type LoaderOptions = {
-  locales?: string[]
-  defaultLocale?: string
-} & Pick<QuietConfig, 'theme' | 'themeConfig'>
+export type LoaderOptions = Pick<QuietConfig, 'theme' | 'themeConfig'>
 
 export type PageDir = {
   name: string
   children: Page[]
   route: string
-  locale: never
   matterData: never
 }
 
@@ -23,7 +19,6 @@ export type PageMD = {
   matterData?: {
     [key: string]: any
   }
-  locale?: string
 }
 
 export type Page = PageDir | PageMD

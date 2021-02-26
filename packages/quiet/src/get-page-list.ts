@@ -8,13 +8,6 @@ function removeExtension(name: string): string {
   return match !== null ? match[1] : ''
 }
 
-export function getLocaleFromFilename(name: string): string | undefined {
-  const localeRegex = /\.([a-zA-Z-]+)?\.(mdx?|jsx?|json|tsx?)$/
-  const match = name.match(localeRegex)
-  if (match) return match[1]
-  return undefined
-}
-
 export default async function getPageList(currentResourcePath: string): Promise<[Page[], string]> {
   const extension = /\.(mdx?|jsx?|tsx?)$/
   const mdxExtension = /\.mdx?$/
@@ -57,7 +50,6 @@ export default async function getPageList(currentResourcePath: string): Promise<
                   name: removeExtension(f.name),
                   route: currentRoute,
                   matterData: data,
-                  locale: getLocaleFromFilename(f.name),
                 }
               }
             }
@@ -65,7 +57,6 @@ export default async function getPageList(currentResourcePath: string): Promise<
             return {
               name: removeExtension(f.name),
               route: currentRoute,
-              locale: getLocaleFromFilename(f.name),
             }
           }
         })
