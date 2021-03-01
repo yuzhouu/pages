@@ -2,7 +2,7 @@ import React from 'react'
 
 import Layout from './layout'
 import { ThemeConfig, PageMeta } from './types'
-import CurrentPageContext from './current-page-context'
+import CurrentPageContext from './use-current-page'
 
 export default (currentPage: PageMeta, _config: Omit<ThemeConfig, 'footer'>) => {
   const config: ThemeConfig = Object.assign(
@@ -17,12 +17,7 @@ export default (currentPage: PageMeta, _config: Omit<ThemeConfig, 'footer'>) => 
   return (props: React.PropsWithChildren<{ [key: string]: any }>) => {
     return (
       <CurrentPageContext.Provider value={currentPage}>
-        <Layout
-          config={config}
-          matterData={{ ...currentPage.matterData }}
-          filename={currentPage.filename}
-          {...props}
-        />
+        <Layout config={config} {...props} />
       </CurrentPageContext.Provider>
     )
   }

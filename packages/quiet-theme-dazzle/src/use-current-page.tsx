@@ -5,4 +5,4 @@ const CurrentPageContext = React.createContext<PageMeta | null>(null)
 
 export default CurrentPageContext
 
-export const useCurrentPageContext = () => useContext(CurrentPageContext)
+export const useCurrentPage = () => useContext(CurrentPageContext)
