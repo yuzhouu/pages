@@ -1,6 +1,6 @@
 {
   "name": "site",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -12,8 +12,8 @@
     "@babel/runtime": "^7.13.7",
     "@emotion/react": "^11.1.5",
     "@mdx-js/loader": "^2.0.0-next.8",
-    "@yuzhouu/quiet": "^0.0.6",
-    "@yuzhouu/quiet-theme-dazzle": "^0.0.6",
+    "@yuzhouu/quiet": "^0.0.7",
+    "@yuzhouu/quiet-theme-dazzle": "^0.0.7",
     "next": "10.0.7",
     "react": "17.0.1",
     "react-dom": "17.0.1",
