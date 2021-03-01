@@ -1,4 +1,4 @@
 ---
-title: Index
+title: Blog List
 type: posts
 ---
